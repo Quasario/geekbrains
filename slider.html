@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .block {
+            margin-top: auto;
+            margin-bottom: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #F7F7F7;
+            height: 100vh;
+        }
+
+        .switcher {
+            min-width: 48px;
+            min-height: 48px;
+            background: rgba(42, 42, 42, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .switcher:hover {
+            fill: red;
+            transition: fill 1s;
+        }
+
+        .text {
+            font-style: italic;
+            text-align: center;
+        }
+
+        .image {
+            max-width: 1000px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class=block>
+        <div class="switcher">
+            <svg width="31" height="31" viewBox="0 0 31 31" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M21.6998 7.7499L13.9498 15.4999L21.6998 23.2499L20.1498 26.3499L9.2998 15.4999L20.1498 4.6499L21.6998 7.7499Z" />
+            </svg>
+        </div>
+
+        <div class="text">
+            <img class="image" src="gallery/6.jpg" alt="model image">
+            <h2>И. К. Айвазовский &#171;Неаполитанский залив утром&#187;</h2>
+        </div>
+
+        <div class="switcher">
+            <svg width="31" height="31" viewBox="0 0 31 31" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M9.3002 23.2501L17.0502 15.5001L9.3002 7.7501L10.8502 4.6501L21.7002 15.5001L10.8502 26.3501L9.3002 23.2501Z" />
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        var names = ['Крейсер в море ночью', 'Выброшенный на скалы корабль', 'После бури', 'Побережье в Амальфи', 'Океан', 'Неаполитанский залив утром', 'Первый поезд в Феодосии', 'Ниагарский водопад', '9 вал', 'Волна', 'Радуга'];
+        var change = document.querySelectorAll('.switcher');
+        var image = document.querySelector('img');
+        var description = document.querySelector('h2');
+        var position = 6;
+
+        change[0].onclick = function () {
+            position -= 1
+            if (position <= 1) {
+                this.style.visibility = 'hidden';
+                position = 1;
+            }
+            image.src = "gallery/" + position + ".jpg";
+            description.innerHTML = "И. К. Айвазовский &#171;" + names[position - 1] + "&#187;";
+            if (position == 10) {
+                change[1].style.visibility = 'visible';
+            }
+        }
+        change[1].onclick = function () {
+            position += 1
+            if (position >= 11) {
+                this.style.visibility = 'hidden';
+                position = 11;
+            }
+            image.src = "gallery/" + position + ".jpg";
+            description.innerHTML = "И. К. Айвазовский &#171;" + names[position - 1] + "&#187;";
+            if (position == 2) {
+                change[0].style.visibility = 'visible';
+            }
+        }
+
+    </script>
+</body>
+
+</html>
