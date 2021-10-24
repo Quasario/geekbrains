@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .letter {
+            width: 50px;
+            height: 25px;
+            border-top: 3px solid #A0522D;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .letter_reverse {
+            width: 50px;
+            height: 25px;
+            border-top: 3px solid #A0522D;
+            transform: rotate(180deg);
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .number {
+            width: 25px;
+            height: 50px;
+            border-right: 3px solid #A0522D;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .number_reverse {
+            width: 25px;
+            height: 50px;
+            border-right: 3px solid #A0522D;
+            box-sizing: border-box;
+            transform: rotate(180deg);
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .cell_black {
+            width: 50px;
+            height: 50px;
+            background-color: #A0522D;
+        }
+
+        .cell_white {
+            width: 50px;
+            height: 50px;
+            background-color: #F5DEB3;
+        }
+
+        .white_figures_letter {
+            color: white;
+            font-size: 26px;
+            font-weight: normal;
+        }
+
+        .black_figures_letter {
+            color: black;
+            font-size: 26px;
+            font-weight: normal;
+        }
+
+        .white_figures {
+            font-size: 40px;
+        }
+
+        .black_figures {
+            font-size: 40px;
+        }
+
+        .corner {
+            width: 25px;
+            height: 25px;
+            position: relative;
+        }
+
+        .pix_top_left {
+            /*точки в углы поля */
+            border-bottom: 3px solid #A0522D;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 3px;
+        }
+
+        .pix_top_right {
+            /*точки в углы поля */
+            border-bottom: 3px solid #A0522D;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 3px;
+        }
+
+        .pix_bottom_left {
+            /*точки в углы поля */
+            border-bottom: 3px solid #A0522D;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 3px;
+        }
+
+        .pix_bottom_right {
+            /*точки в углы поля */
+            border-bottom: 3px solid #A0522D;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+        }
+
+        ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-height: 50px;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        // Задание 1 - создаем шахматное поле
+        var letters = 'ABCDEFGH'; // для заполнения полей с буквами
+        for (var i = 0; i < 10; i++) {
+            var list = document.createElement("ul");
+            if (i == 0) {
+                for (var j = 0; j < 10; j++) {
+                    var li = document.createElement("li");
+                    if (j == 0 || j == 9) {
+                        li.setAttribute("class", "corner");
+                    } else {
+                        li.innerText = letters[j - 1];
+                        li.setAttribute("class", "letter_reverse");
+                    }
+                    list.append(li);
+                }
+            } else if (i == 9) {
+                for (var j = 0; j < 10; j++) {
+                    var li = document.createElement("li");
+                    if (j == 0 || j == 9) {
+                        li.setAttribute("class", "corner");
+                    } else {
+                        li.innerText = letters[j - 1];
+                        li.setAttribute("class", "letter");
+                    }
+                    list.append(li);
+                }
+            } else {
+                for (var j = 0; j < 10; j++) {
+                    var li = document.createElement("li");
+                    if (j == 0) {
+                        li.innerText = 9 - i;
+                        li.setAttribute("class", "number");
+                    } else if (j == 9) {
+                        li.innerText = 9 - i;
+                        li.setAttribute("class", "number_reverse");
+                    } else if (j % 2 == 0 && i % 2 != 0) {
+                        li.setAttribute("class", "cell_black");
+                    } else if (j % 2 != 0 && i % 2 == 0) {
+                        li.setAttribute("class", "cell_black");
+                    } else {
+                        li.setAttribute("class", "cell_white");
+                    }
+                    list.append(li);
+                }
+            }
+            document.body.append(list);
+        }
+        // Задание 2 - подписывем клетки
+        var figureLetter = ['R', 'K', 'B', 'Q', 'Ki', 'B', 'K', 'R', 'пропуск', 'пропуск', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'];
+        var figures = document.querySelectorAll("li");
+        for (var blackFigures = 11, whiteFigures = 88; blackFigures < 29; blackFigures++, whiteFigures--) {//цикл устроен так, что верхняя (черная) сторона заполняется от левого верхего угла, а нижняя (белая) от нижнего правого угла
+            if (blackFigures == 19 || blackFigures == 20) { //так как вся доска разбита на клетки (цифры на полях тоже клетки) нужно добавить пропуск двух элементов, которые как раз и есть цифры на полях 8 справа и 7 слева, 'пропуски' в массиве figureLetter присутствуют по этой же причине
+                continue
+            } else {
+                figures[blackFigures].innerText = figureLetter[blackFigures - 11];
+                figures[blackFigures].classList.add("black_figures_letter");
+                figures[whiteFigures].innerText = figureLetter[88 - whiteFigures];
+                figures[whiteFigures].classList.add("white_figures_letter");
+            }
+            //тут я меняю местами ферзя и короля на белой стороне, т.к. очередность их следования в массиве не позволила мне сделать это сразу, ну по крайней мере я недодумался
+            figures[84].innerText = figureLetter[3];
+            figures[85].innerText = figureLetter[4];
+        }
+
+
+        // Задание 3 - добавляем фигуры
+        var figureLetter = ['&#9820', '&#9822', '&#9821', '&#9819', '&#9818', '&#9821', '&#9822', '&#9820', 'пропуск', 'пропуск', '&#9823', '&#9823', '&#9823', '&#9823', '&#9823', '&#9823', '&#9823', '&#9823'];
+        var figures = document.querySelectorAll("li");
+        for (var blackFigures = 11, whiteFigures = 88; blackFigures < 29; blackFigures++, whiteFigures--) {//цикл устроен так, что верхняя (черная) сторона заполняется от левого верхего угла, а нижняя (белая) от нижнего правого угла
+            if (blackFigures == 19 || blackFigures == 20) { //так как вся доска разбита на клетки (цифры на полях тоже клетки) нужно добавить пропуск двух элементов, которые как раз и есть цифры на полях 8 справа и 7 слева . Два undefined в массиве figureLetter присутствуют по этой же причине
+                continue
+            } else {
+                figures[blackFigures].innerHTML = figureLetter[blackFigures - 11];
+                figures[blackFigures].classList.add("black_figures");
+                figures[whiteFigures].innerHTML = figureLetter[88 - whiteFigures];
+                figures[whiteFigures].classList.add("white_figures");
+            }
+            //тут я меняю местами ферзя и короля на белой стороне, т.к. очередность их следования в массиве не позволила мне сделать это сразу, ну по крайней мере я недодумался
+            figures[84].innerHTML = figureLetter[3];
+            figures[85].innerHTML = figureLetter[4];
+        }
+
+
+        //сюда можно даже не смотреть, тут кррайнее извращение, чтобы заполнить углы поля точками (бордеры оставляют небольшой кусок путсого пространства)
+        var il = document.querySelectorAll(".corner");
+        il[0].innerHTML = '<div class="pix_top_left"></div>';
+        il[1].innerHTML = '<div class="pix_top_right"></div>';
+        il[2].innerHTML = '<div class="pix_bottom_left"></div>';
+        il[3].innerHTML = '<div class="pix_bottom_right"></div>';
+
+    </script>
+</body>
+
+</html>
