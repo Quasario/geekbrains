@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .flex {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <section class="flex">
+        <div class="row">
+            <img src="small/left.png" alt="left">
+            <img src="small/center.png" alt="center">
+            <img src="small/right.png" alt="right">
+        </div>
+        <img class="box" src="big/left.png" alt="">
+    </section> -->
+    <script>
+        var flex = document.createElement("section");
+        flex.classList.add("flex");
+        var row = document.createElement("div");
+        row.classList.add("row");
+        flex.append(row);
+
+        for (i = 1; i < 4; i++) {
+            var smallImage = document.createElement("img");
+            smallImage.src = "small/" + i + ".png";
+            row.append(smallImage);
+        }
+        document.body.append(flex);
+
+
+        var images = document.querySelectorAll("img");
+        var bigImage = document.createElement("img");
+        images[0].onclick = function () {
+            bigImage.src = "big/1.png";
+        }
+        images[1].onclick = function () {
+            bigImage.src = "big/2.png";
+        }
+        images[2].onclick = function () {
+            bigImage.src = "big/3.png";
+        }
+        flex.append(bigImage);
+
+    </script>
+</body>
+
+</html>
