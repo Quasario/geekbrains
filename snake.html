@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .flex {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .score {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 24px;
+            line-height: 30px;
+            font-weight: normal;
+            margin-bottom: 30px;
+            margin-top: 50px;
+            color: gray;
+        }
+
+        .battlefield {
+            display: flex;
+            justify-content: center;
+        }
+
+        .cell {
+            border: 1px solid gray;
+            width: 30px;
+            height: 30px;
+            background: lightblue;
+            box-sizing: border-box;
+        }
+
+        .snake {
+            background-color: lightgreen;
+            border: none;
+        }
+
+        .food {
+            background-color: rgb(210, 110, 110);
+            border: none;
+        }
+
+        .barrier {
+            background-color: black;
+            border: none;
+        }
+
+        button {
+            outline: none;
+            font-size: 24px;
+            line-height: 30px;
+            color: gray;
+            background-color: white;
+            border: 1px solid gray;
+            border-radius: 15px;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 1s;
+        }
+
+        button:hover {
+            background-color: lightgreen;
+        }
+
+        .red-button:hover {
+            background-color: rgb(210, 110, 110);
+        }
+
+        .up {
+            border-top: 3px solid yellow;
+        }
+
+        .down {
+            border-bottom: 3px solid yellow;
+        }
+
+        .left {
+            border-left: 3px solid yellow;
+        }
+
+        .right {
+            border-right: 3px solid yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="flex">
+        <div class="score">Score: 0</div>
+        <div class="battlefield"></div>
+        <button>Start</button>
+    </section>
+    <script src="snake.js"></script>
+</body>
+
+</html>
