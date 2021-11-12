@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .burger-size,
+        .burger-filling,
+        .burger-addition {
+            outline: 1px solid gray;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        h3 {
+            font-weight: normal;
+            font-size: 20px;
+            line-height: 20px;
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background-color: white;
+        }
+
+        .burger-size {
+            margin-top: 20px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            max-width: inherit;
+        }
+
+        label:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 17px;
+            height: 17px;
+            background-color: white;
+            border-radius: 50%;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-left: 5px;
+        }
+
+        input:checked {
+            background-color: green;
+        }
+
+        .price {
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .calories {
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="burger-size">
+
+    </div>
+    <div class="burger-filling">
+
+    </div>
+    <div class="burger-addition">
+
+    </div>
+
+    <div class="components-total">
+        <div class='price'>
+            Стоимость: 0&#8381;
+        </div>
+        <div class='calories'>
+            Калорийность: 0cal
+        </div>
+    </div>
+
+    <script>
+        let size = [
+            { id: 1, title: 'Big', price: 100, calories: 40 },
+            { id: 2, title: 'Small', price: 50, calories: 20 }
+        ];
+        let filling = [
+            { id: 1, title: 'Cheese', price: 10, calories: 20 },
+            { id: 2, title: 'Salad', price: 20, calories: 5 },
+            { id: 3, title: 'Potato', price: 15, calories: 10 }
+        ];
+        let addition = [
+            { id: 1, title: 'Spice', price: 15, calories: 0 },
+            { id: 2, title: 'Mayonnaise', price: 20, calories: 5 }
+        ];
+
+        class Burger {
+            constructor(sizeList, fillingList, additionList) {
+                this.sizeList = sizeList;
+                this.fillingList = fillingList;
+                this.additionList = additionList;
+                this.renderSizeBlock();
+                this.renderFillingBlock();
+                this.renderAdditionBlock();
+                this.checkEvents();
+            }
+
+            renderSizeBlock() {
+                let itemList = this.sizeList.map(item => this.createBlock(item));
+                document.querySelector('.burger-size').innerHTML = `<h3>Size</h3> ${itemList.join("\n")}`;
+            }
+
+            renderFillingBlock() {
+                let itemList = this.fillingList.map(item => this.createBlock(item));
+                document.querySelector('.burger-filling').innerHTML = `<h3>Filling</h3> ${itemList.join("\n")}`;
+            }
+
+            renderAdditionBlock() {
+                let itemList = this.additionList.map(item => this.createBlock(item));
+                document.querySelector('.burger-addition').innerHTML = `<h3>Addition</h3> ${itemList.join("\n")}`;
+            }
+
+            createBlock(obj) {
+                return (`<label for="${obj.title.toLowerCase()}">
+                            <input class='${obj.price}-${obj.calories}' id="${obj.title.toLowerCase()}" type="checkbox">
+                            ${obj.title} (${obj.price}&#8381; / ${obj.calories})
+                        </label>`);
+            }
+
+            checkEvents() {
+                let checkedList = [];
+                document.body.addEventListener('click', (event) => {
+                    if (event.target.checked && !checkedList.includes(event.target)) {
+                        checkedList.push(event.target);
+                    } else if (checkedList.includes(event.target)) {
+                        checkedList.splice(checkedList.indexOf(event.target), 1);
+                    }
+                    this.sumComponents(checkedList);
+                });
+            }
+
+            sumComponents(list) {
+                let priceTotal = 0;
+                let caloriesTotal = 0;
+                for (let item of list) {
+                    let itemComponents = item.classList[0].split('-');
+                    priceTotal += parseInt(itemComponents[0]);
+                    caloriesTotal += parseInt(itemComponents[1]);
+                }
+                document.querySelector('.price').innerHTML = `Стоимость: ${priceTotal}&#8381;`;
+                document.querySelector('.calories').innerHTML = `Калорийность: ${caloriesTotal}cal`;
+            }
+        }
+
+        let items = new Burger(size, filling, addition);
+    </script>
+</body>
+
+</html>
