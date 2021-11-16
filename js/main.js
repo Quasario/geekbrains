@@ -1,16 +1,14 @@
-let products = [
-    { id: 1, title: 'Monitor', price: 400 },
-    { id: 2, title: 'Headphones', price: 250 },
-    { id: 3, title: 'Keyboard', price: 150 },
-    { id: 4, title: 'Mouse', price: 100 },
-    { id: 5, title: 'Speakers', price: 50 },
-    { id: 6, title: 'Mousepad', price: 20 }
-];
+const URL = 'https://raw.githubusercontent.com/Quasario/online-store-api/master/responses';
 
 class Products {
-    constructor(productsList) {
-        this.productsList = productsList;
-        this.renderPage();
+    constructor() {
+        this.productsList;
+        this.getProductsList()
+            .then(data => {
+                this.productsList = data;
+                this.renderPage();
+                this.getProductsSum();
+            });
     }
 
     renderPage() {
@@ -31,22 +29,52 @@ class Products {
                 </div>`);
     }
 
+    getProductsList() {
+        return fetch(`${URL}/catalogData.json`)
+            .then(result => result.json())
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     getProductsSum() {
         let total = 0;
         for (let item of this.productsList) {
             total += parseInt(item.price);
         }
-        return total;
+        console.log(`Суммарная стоимость товаров на странице: ${total}$`);
     }
 }
 
-let items = new Products(products);
-console.log(`Суммарная стоимость товаров на странице: ${items.getProductsSum()}$`);
+let items = new Products();
+
 
 
 class Cart {
     constructor() {
+        this.cartList;
+        this.getCartList()
+            .then(data => {
+                this.cartList = data.contents;
+                this.renderCart();
+                this.getCartSum();
+            });
+    }
 
+    renderCart() {
+        let itemList = this.cartList.map(item => this.createBlock(item));
+        document.querySelector('.cart-positions').innerHTML = itemList.join("\n");
+    }
+
+    createBlock(obj = { title: 'Пусто', price: 'Пусто', quantity: 'Пусто' }) {
+        return (`<div class="cart-item">
+                    <img src="img/${obj.title}.webp" alt="item 2">
+                    <div class="position-text">
+                        <h3>${obj.title}</h3>
+                        <p>${obj.price}&dollar;</p>
+                    </div>
+                    <h3 class="position-quantitiy">${obj.quantity}</h3>
+                </div>`);
     }
 
     deleteItem() { //улаляет элемент из корзины
@@ -57,7 +85,22 @@ class Cart {
 
     }
 
-    getCartSum() { //возвращает суммарную стоимость товаров в корзине
+    getCartList() {
+        return fetch(`${URL}/getBasket.json`)
+            .then(result => result.json())
+            .catch(error => {
+                console.log(error);
+            });
+    }
 
+    getCartSum() { //возвращает суммарную стоимость товаров в корзине
+        let cart_total = document.querySelector('.cart_total');
+        let total = 0;
+        for (let item of this.cartList) {
+            total += parseInt(item.price) * item.quantity;
+        }
+        cart_total.innerHTML = total + '$';
     }
 }
+
+let cart = new Cart();
