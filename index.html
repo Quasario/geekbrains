@@ -17,18 +17,21 @@
     <div id="app">
         <header>
             <div class="top-menu container">
-                <form action="#" class="search-form" @submit.prevent='filterSearch(userSearch)'>
+
+                <search></search>
+
+                <!-- <form action="#" class="search-form" @submit.prevent='filterSearch()'>
                     <input type="text" class="search-field" v-model="userSearch">
                     <button class="btn-search" type="submit">
                         <img src="img/seach_logo.svg" alt="search icon">
                     </button>
-                </form>
+                </form> -->
 
                 <input class="top__check" id="top__checkbox" type="checkbox">
                 <label for="top__checkbox">
                     <img src="img/shopping_cart_logo.svg" alt="shopping cart icon">
                 </label>
-                <div class="cart-items">
+                <div class="cart">
                     <label class="top__cross" for="top__checkbox">
                         <svg width="13" height="13" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -36,38 +39,77 @@
                                 fill="#6F6E6E" />
                         </svg>
                     </label>
-                    <h1>SHOPPING CART</h1>
 
-                    <div class="cart-positions"></div>
+                    <cart :cart-list='cartItems'></cart>
 
-                    <div class="total">
-                        <h3>TOTAL PRICE: <span class="cart_total">0$</span></h3>
-                        <a href="index.html">&#10132;</a>
-                    </div>
+                    <!-- <div class="cart-items">
+                        <h1>SHOPPING CART</h1>
+                        <h2 v-if="!cartItems.length">CART IS EMPTY</h2>
+
+                        <div class="cart-positions">
+                            <div class="cart-item" v-for='item of cartItems' :key="item.id">
+                                <img :src="item.img" v-bind:alt="'item ' + item.id + ' image'">
+                                <div class="position-text">
+                                    <h3>{{ item.title }}</h3>
+                                    <p>{{ item.price }}&dollar;</p>
+                                </div>
+
+                                <div class="quantity-regulation">
+                                    <button class="bucket-icon" @click='deleteCartPosition(item)'>
+                                        &#128465;
+                                    </button>
+                                    <h3 class="position-quantitiy">{{ item.quantity }}</h3>
+                                    <div class="arrows">
+                                        <button @click='increaseQuantity(item)'>
+                                            &#129129;
+                                        </button>
+                                        <button @click='decreaseQuantity(item)'>
+                                            &#129131;
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="total">
+                            <h3>TOTAL PRICE: <span class="cart_total">{{ cartTotal+'$' }}</span></h3>
+                            <a href="index.html" v-if="cartItems.length">&#10132;</a>
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </header>
 
 
         <main>
-            <div class="products container">
-                <div class="item-card" v-for="product of products" :key="product.id">
-                    <img v-bind:src="'img/' + product.title + '.webp'" v-bind:alt="'item ' + product.id">
+
+            <products :products='products'></products>
+
+            <!-- <div class="products container">
+                <div v-for="product of products" class="item-card" :key="product.id">
+                    <img :src="product.img" v-bind:alt="'item ' + product.id + ' image'">
                     <div class="item-shadow">
-                        <input id="addButton" type="button" value="Add to Cart">
-                        <!--v-on:click='deleteProducts()'-->
+                        <input id="addButton" type="button" value="Add to Cart" @click="addProduct(product)">
                     </div>
+
                     <div class="item-text">
                         <h3>{{ product.title }}</h3>
                         <p>{{ product.price }}&dollar;</p>
                     </div>
                 </div>
-            </div>
+                <div class="empty-search" v-if='!products.length'>
+                    <img class="container" src="img/search_background.png" alt="">
+                    <h3 class="search-text">По запросу {{'"'+output+'"'}} ничего не найдено...</h3>
+                </div>
+            </div> -->
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
     <script src="js/main.js"></script>
+    <script src="js/ProductsComponent.js"></script>
+    <script src="js/SearchComponent.js"></script>
+    <script src="js/CartComponent.js"></script>
 </body>
 
 </html>
