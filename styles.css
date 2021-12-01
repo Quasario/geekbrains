@@ -13,10 +13,39 @@
     background-color: #222222;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-bottom: 50px;
     position: relative;
 }
+
+.search-form {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.search-field {
+    outline: none;
+    display: block;
+    font-family: inherit;
+    font-weight: normal;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 6px 12px;
+    max-width: 220px;
+    margin-right: 10px;
+}
+
+.btn-search {
+    display: flex;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
 
 .top-menu > label {
     display: flex;
