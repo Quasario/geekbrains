@@ -141,14 +141,14 @@
 .top__check {
     display: none;
 }
-.top__check:checked ~ .cart-items {
+.top__check:checked ~ .cart {
     display: block;
 }
-.top__check:not(:checked) ~ .cart-items {
+.top__check:not(:checked) ~ .cart {
     display: none;
 }
 
-.cart-items {
+.cart {
     box-sizing: border-box;
     position: absolute;
     right: 0;
@@ -159,6 +159,7 @@
     box-shadow: -5px 10px 20px lightgray;
     padding: 30px;
 }
+
 .cart-items > h1 {
     font-weight: bold;
     font-size: 16px;
@@ -166,7 +167,13 @@
     color: #000000;
     margin-bottom: 24px;
 }
-
+.cart-items > h2 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 20px;
+    color: lightgrey;
+    margin-bottom: 24px;
+}
 
 .top__cross {
     position: absolute;
@@ -200,10 +207,48 @@
     line-height: 20px;
 }
 
-.position-quantitiy {
+
+.quantity-regulation {
     margin-left: auto;
-    margin-right: 10px;
+    display: flex;
+    align-items: center;
 }
+.bucket-icon {
+    cursor: pointer;
+    outline: none;
+    display: block;
+    font-family: inherit;
+    font-weight: bold;
+    border: none;
+    background: none;
+    font-size: 20px;
+    line-height: 20px;
+}
+.bucket-icon:hover {
+    color: rgb(200, 80, 80);
+}
+.position-quantitiy {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.arrows button {
+    cursor: pointer;
+    outline: none;
+    display: block;
+    font-family: inherit;
+    font-weight: normal;
+    background: none;
+    border: none;
+    font-size: 16px;
+    line-height: 16px;
+}
+.arrows button:first-child:hover {
+    color:rgb(10, 200, 10);
+}
+.arrows button:last-child:hover {
+    color:rgb(200, 80, 80);
+}
+
 
 .cart-item > img {
     width: 50px;
@@ -232,4 +277,22 @@
 }
 .total > h3 > span {
     color: rgb(10, 200, 10);
+}
+
+
+.empty-search {
+    position: relative;
+}
+
+.search-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 300px;
+    position: absolute;
+    top: 420px;
+    left: 80px;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
 }

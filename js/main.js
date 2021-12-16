@@ -3,44 +3,67 @@ const URL = 'https://raw.githubusercontent.com/Quasario/online-store-api/master/
 const app = new Vue({
     el: '#app',
     data: {
-        catalogUrl: '/catalogData.json',
+        catalogURL: '/catalogData.json', //ссылка на каталог товаров
+        cartURL: '/getBasket.json', //ссылка на предварительное содержимое корзины
         productsAll: [], //массив всех товаров
         products: [], //массив товаров, отображаемый на странице
-        // message: ''
-        // imgCatalog: 'https://via.placeholder.com/200x150',
-        userSearch: '',
-        // show: false
+        userSearch: '', //текст в поисковой строка
+        cartItems: [], //список товаров в корзине
+        cartTotal: 0, //сумма корзины
+        output: '', //переменная для вывода сообщения о пустом поиске
     },
     methods: {
-        filterSearch(value) {
-            console.log(value);
-            const regexp = new RegExp(value, 'i');
+        filterSearch() {
+            console.log(this.userSearch);
+            this.output = this.userSearch;
+            const regexp = new RegExp(this.output, 'i');
             this.products = this.productsAll.filter(product => regexp.test(product.title));
         },
-        getProductsList(site) {
+        getJSON(site) {
             return fetch(site)
                 .then(result => result.json())
                 .catch(error => {
                     console.log(error);
                 });
         },
-        deleteProducts() {
-            this.products = [];
-            console.log(this.products);
+
+        addProduct(position) {
+            let find = this.cartItems.find(el => el.id === position.id);
+            if (find) {
+                find.quantity++;
+            } else {
+                const prod = Object.assign({ quantity: 1 }, position);//создание нового объекта на основе двух, указанных в параметрах
+                this.cartItems.push(prod)
+            }
+            this.getCartTotal()
+        },
+        increaseQuantity(x) {
+            x.quantity++;
+            this.getCartTotal();
+        },
+        decreaseQuantity(x) {
+            x.quantity--;
+            if (x.quantity == 0) {
+                this.deleteCartPosition(x);
+            }
+            this.getCartTotal();
+        },
+        deleteCartPosition(x) {
+            this.cartItems.splice(this.cartItems.indexOf(x), 1);
+            this.getCartTotal();
+        },
+        getCartTotal() {
+            let sum = 0
+            for (item of this.cartItems) {
+                sum += parseInt(item.price * item.quantity);
+            }
+            this.cartTotal = sum;
+            console.log(this.cartTotal);
+            console.log(this.cartItems);
         }
-        // getJson(url) {
-        //     return fetch(url)
-        //         .then(result => result.json())
-        //         .catch(error => {
-        //             console.log(error);
-        //         })
-        // },
-        // addProduct(product) {
-        //     console.log(product.id_product);
-        // }
     },
     mounted() {
-        this.getProductsList(`${URL}/catalogData.json`)
+        this.getJSON(URL + this.catalogURL)
             .then(data => {
                 for (let el of data) {
                     this.productsAll.push(el);
@@ -48,12 +71,15 @@ const app = new Vue({
                 this.products = this.productsAll;
                 console.log(this.products);
             });
-        // this.getJson(`getProducts.json`)
-        //     .then(data => {
-        //         for (let el of data) {
-        //             this.products.push(el);
-        //         }
-        //     })
+
+        this.getJSON(URL + this.cartURL)
+            .then(data => {
+                for (let el of data.contents) {
+                    this.cartItems.push(el);
+                }
+                console.log(this.cartItems);
+                this.getCartTotal();
+            });
     }
 })
 
