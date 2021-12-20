@@ -1,26 +1,41 @@
 import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { Message } from './components/message/Message';
+import { Form } from './components/form/Form';
 
 function App() {
   const givenText = "Some text"
+
+  const [messageList, setMessageList] = useState([]);
+  let [botMessage, setBotMessage] = useState('');
+
+  const handleAddMessage = (newMessage) => {
+    setMessageList((prevMessageList) => [...prevMessageList, newMessage]);
+  }
+
+  useEffect(() => {
+    if (messageList.length > 0) {
+      const timer = setTimeout(() => {
+        setBotMessage(() => (`${messageList[messageList.length - 1].author}, привет!`));
+      }, 1500)
+    }
+  }, [messageList]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Message text={givenText} />
-      </header>
+
+      <Form onPrintMessage={handleAddMessage} />
+      {messageList.map(({ text, author }) => (
+        <div>
+          <div>
+            {author}: {text}
+          </div>
+          {botMessage}
+        </div>
+
+      ))}
+
     </div>
   );
 }
