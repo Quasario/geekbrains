@@ -1,5 +1,8 @@
+import './Form.css';
 import { useState } from "react";
-import { usersPool } from '../../usersPool';
+import { usersPool } from './usersPool';
+import { Button, TextField } from '@mui/material'
+
 
 export const Form = ({ onPrintMessage }) => {
     const [value, setValue] = useState("");
@@ -10,16 +13,15 @@ export const Form = ({ onPrintMessage }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(usersPool);
         let user = usersPool[Math.floor(Math.random() * usersPool.length)];
-        onPrintMessage({ text: value, author: user });
+        onPrintMessage({ text: value, author: user, id: `msg-${Date.now()}` });
         setValue('');
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" value={value} onChange={handleChange} />
-            <input type="submit" />
+        <form onSubmit={handleSubmit} className="form">
+            <TextField autoFocus={true} id="outlined-basic" label="Outlined" variant="outlined" value={value} onChange={handleChange} />
+            <Button variant="text" type="submit">Отправить</Button>
         </form>
     )
 
