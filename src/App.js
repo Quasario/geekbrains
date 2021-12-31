@@ -1,41 +1,32 @@
-import logo from './logo.svg';
 import { useEffect, useState } from 'react';
 import './App.css';
-import { Message } from './components/message/Message';
 import { Form } from './components/form/Form';
+import { Message } from './components/message/Messages';
+import { Chats } from './components/chats/Chats';
 
 function App() {
-  const givenText = "Some text"
-
   const [messageList, setMessageList] = useState([]);
-  let [botMessage, setBotMessage] = useState('');
 
   const handleAddMessage = (newMessage) => {
     setMessageList((prevMessageList) => [...prevMessageList, newMessage]);
   }
 
   useEffect(() => {
-    if (messageList.length > 0) {
-      const timer = setTimeout(() => {
-        setBotMessage(() => (`${messageList[messageList.length - 1].author}, привет!`));
+    const lastSender = messageList[messageList.length - 1]?.author;
+    if (lastSender != 'BOT' && lastSender != undefined) {
+      setTimeout(() => {
+        handleAddMessage({ text: `${lastSender}, привет!`, author: "BOT", id: `msg-${Date.now()}` })
       }, 1500)
     }
   }, [messageList]);
 
   return (
     <div className="App">
-
-      <Form onPrintMessage={handleAddMessage} />
-      {messageList.map(({ text, author }) => (
-        <div>
-          <div>
-            {author}: {text}
-          </div>
-          {botMessage}
-        </div>
-
-      ))}
-
+      <Chats />
+      <div>
+        <Form onPrintMessage={handleAddMessage} />
+        <Message messages={messageList} />
+      </div>
     </div>
   );
 }
